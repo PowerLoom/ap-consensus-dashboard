@@ -4,6 +4,8 @@
     import { env } from '$env/dynamic/public';
 
     export let API_PREFIX = env.PUBLIC_API_PREFIX;
+    export let NETWORK = env.PUBLIC_NETWORK || "Ethereum Mainnet";
+    export let EXPLORER_PREFIX = env.PUBLIC_EXPLORER_PREFIX || "https://etherscan.io";
     export let data;
     const slug = data.slug;
 
@@ -57,7 +59,7 @@
   
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt class="truncate text-sm font-medium text-gray-500">Current Epoch</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><a href="https://etherscan.io/block/{currentEpoch}" target="_blank" rel="noreferrer noopener">{currentEpoch}</a></dd>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><a href="{EXPLORER_PREFIX}/block/{currentEpoch}" target="_blank" rel="noreferrer noopener">{currentEpoch}</a></dd>
       </div>
     </dl>
 </div>
@@ -70,8 +72,8 @@
             <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
               <div class="truncate">
                 <div class="flex text-sm">
-                  <p class="truncate font-medium text-indigo-600"><a href="https://etherscan.io/block/{epoch.id}" target="_blank" rel="noreferrer noopener">{epoch.id}</a></p>
-                  <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in Ethereum Mainnet</p>
+                  <p class="truncate font-medium text-indigo-600"><a href="{EXPLORER_PREFIX}/block/{epoch.id}" target="_blank" rel="noreferrer noopener">{epoch.id}</a></p>
+                  <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {NETWORK}</p>
                 </div>
                 <div class="mt-2 flex">
                   <div class="ml-2 flex flex-shrink-0">

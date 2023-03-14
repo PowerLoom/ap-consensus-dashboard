@@ -4,6 +4,8 @@
     import { env } from '$env/dynamic/public';
 
     export let API_PREFIX = env.PUBLIC_API_PREFIX;
+    //export let NETWORK = env.PUBLIC_NETWORK || "Ethereum Mainnet";
+    export let EXPLORER_PREFIX = env.PUBLIC_EXPLORER_PREFIX || "https://etherscan.io";
 
     let projects = []
     let currentEpoch = "";
@@ -41,7 +43,7 @@
   
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt class="truncate text-sm font-medium text-gray-500">Current Epoch</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><a href="https://etherscan.io/block/{currentEpoch}" target="_blank" rel="noreferrer noopener">{currentEpoch}</a></dd>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><a href="{EXPLORER_PREFIX}/block/{currentEpoch}" target="_blank" rel="noreferrer noopener">{currentEpoch}</a></dd>
       </div>
   
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -60,7 +62,7 @@
               <div class="truncate">
                 <div class="flex text-sm">
                   <p class="truncate font-medium text-indigo-600">{project.id.substr(21, 30)}</p>
-                  <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in UniswapV2</p>
+                  <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {project.id.split("_").pop().split("-")[0]}</p>
                 </div>
                 {#if 0}
                 <div class="mt-2 flex">
