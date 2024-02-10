@@ -3,8 +3,8 @@
     import axios from "axios";
     import { env } from '$env/dynamic/public';
     import { ethers } from "ethers";
-
-    export let API_PREFIX = env.PUBLIC_API_PREFIX;
+	import project_ids from '../projects.json';
+	export let API_PREFIX = env.PUBLIC_API_PREFIX;
     //export let NETWORK = env.PUBLIC_NETWORK || "Ethereum Mainnet";
     export let EXPLORER_PREFIX = env.PUBLIC_EXPLORER_PREFIX || "https://etherscan.io";
     export let RPC = env.PUBLIC_RPC;
@@ -1278,20 +1278,14 @@
 
     const contract = new ethers.Contract(env.PUBLIC_STATE_CONTRACT, ABI, provider);
 
-	const liteModePairs = [
-		"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
-        "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5",
-        "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852",
-        "0x3041cbd36888becc7bbcbc0045e3b1f144466f5f",
-        "0xd3d2e2692501a5c9ca623199d38826e513033a17",
-        "0xbb2b8038a1640196fbe3e38816f3e67cba72d940",
-        "0xa478c2975ab1ea89e8196811f51a7b7ade33eb11"
-	];
+	// const liteModePairs = 
+	// console.log('liteModePairs', liteModePairs);
 
-    let projects = []
+    let projects = [];
     let currentEpoch = "";
 	let currentEpochId = "";
     let allSnapshotters= [];
+	let allMasterSnapshotters= [];
 
     onMount(async () => {
       currentEpoch = Object.assign({}, await contract.currentEpoch());
@@ -1299,16 +1293,11 @@
 	  currentEpoch = Number(currentEpoch[1]);
       //console.warn('current epoch', currentEpoch);
       allSnapshotters = Object.values(Object.assign({}, await contract.getSnapshotters()));
-      //console.warn('current allSnapshotters', allSnapshotters);
-	  let getProjects;
-	  if (env.PUBLIC_SHOW_ALL_PAIRS){
-		let projects = Object.values(Object.assign({}, await contract.getProjects()));
-		let pretestProjects = Object.values(Object.assign({}, await contract.getPretestProjects()));
+	  allMasterSnapshotters = Object.values(Object.assign({}, await contract.getMasterSnapshotters()));
 
-		getProjects = [...projects, ...pretestProjects];
-	  } else {
-		getProjects = [...liteModePairs.map((pair) => 'pairContract_pair_total_reserves:'+pair.toLowerCase()+':UNISWAPV2'), ...liteModePairs.map((pair) => 'pairContract_trade_volume:'+pair.toLowerCase()+':UNISWAPV2'), ...liteModePairs.map((pair) => 'aggregate_pairContract_24h_trade_volume:'+pair.toLowerCase()+':UNISWAPV2'), ...liteModePairs.map((pair) => 'aggregate_pairContract_7d_trade_volume:'+pair.toLowerCase()+':UNISWAPV2'), ...['aggregate_24h_top_pairs_lite:35ee1886fa4665255a0d0486c6079c4719c82f0f62ef9e96a98f26fde2e8a106:UNISWAPV2', 'aggregate_24h_stats_lite:35ee1886fa4665255a0d0486c6079c4719c82f0f62ef9e96a98f26fde2e8a106:UNISWAPV2', 'aggregate_24h_top_tokens_lite:35ee1886fa4665255a0d0486c6079c4719c82f0f62ef9e96a98f26fde2e8a106:UNISWAPV2', 'aggregate_7d_top_pairs_lite:a62a2ce0d16f995d901016bff230e419c9c8a51ac267008fcb58e67fea40b676:UNISWAPV2']]
-	  }
+	  allSnapshotters = allSnapshotters.concat(allMasterSnapshotters);
+	  let getProjects = project_ids["project_ids"];
+
 	  const projectSnapshotters = Object.values(Object.assign({}, await contract.getSnapshotters()));
 	  console.log('current getProjects', getProjects);
       for (let i=0; i<getProjects.length; i++){
@@ -1317,9 +1306,6 @@
               snapshotters: projectSnapshotters
           }
           projects = [...projects, proj];
-        //   if (i==99){
-        //     break;
-        //   }
       }
       /*
       const resp = await axios.get(API_PREFIX+'/metrics/projects');

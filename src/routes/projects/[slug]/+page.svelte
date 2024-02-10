@@ -1282,6 +1282,7 @@
 
     let epochs = [];
     let snapshotters = [];
+	let masterSnapshotters = [];
     let currentEpoch = "";
 	let currentEpochId = "";
 	let search = "";
@@ -1302,6 +1303,9 @@
       currentEpoch = Number(currentEpoch[1]);
       console.warn('current epoch', currentEpoch, currentEpochId);
       snapshotters = Object.values(Object.assign({}, await contract.getSnapshotters()));
+      masterSnapshotters = Object.values(Object.assign({}, await contract.getMasterSnapshotters()));
+	  snapshotters = snapshotters.concat(masterSnapshotters);
+	  
 	  const epochSize = Number(await contract.EPOCH_SIZE());
       let c=0;
       for (let i=currentEpochId; c<5; i=i-1){
