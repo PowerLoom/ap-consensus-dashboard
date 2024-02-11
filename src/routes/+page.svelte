@@ -1749,7 +1749,7 @@
 			response = await axios.post(API_PREFIX+`/getFinalizedProjects`, {epochId: epochId});
 			console.log('got Finalized Projects', response.data);
 			if (response.data) {
-				return new Set(response.data.finalized_projects);
+				return response.data.finalized_projects;
 			} else {
 				throw new Error(JSON.stringify(response.data));
 			}
@@ -1852,14 +1852,15 @@
 					  </div>
 					  <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
 						<div class="flex -space-x-1 overflow-hidden">
-						  {#if value.finalizedProjects.has(project)}
+						  {#if value.finalizedProjects.hasOwnProperty(project)}
 						  <span class="inline-block h-6 w-6 rounded-full bg-green-100">
 							<svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 							</svg>
 						  </span>
+						  {value.finalizedProjects[project]}
 						  {/if}
-						  {#if !value.finalizedProjects.has(project)}
+						  {#if !value.finalizedProjects.hasOwnProperty(project)}
 						  <span class="inline-block h-6 w-6 rounded-full bg-red-100">
 							<svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
