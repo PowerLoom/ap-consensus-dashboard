@@ -1809,7 +1809,7 @@
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt class="truncate text-sm font-medium text-gray-500">Total Projects</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{projects.length}</dd>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{project_ids.project_ids.length}</dd>
       </div>
   
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -1862,9 +1862,9 @@
 						  {/if}
 						  {#if !value.finalizedProjects.hasOwnProperty(project)}
 						  <span class="inline-block h-6 w-6 rounded-full bg-red-100">
+							<!-- question mark -->
 							<svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-							</svg>
+							  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v2m0 6v2"></path>
 						  </span>
 						  {/if}
 						</div>
